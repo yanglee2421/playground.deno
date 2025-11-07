@@ -64,3 +64,21 @@ export const mapGroupBy = <TElement, TKey>(
 
   return resultMap;
 };
+
+export const isWithoutFalsy = (list: unknown[]) => {
+  return list.every(Boolean);
+};
+
+export const isWithTruthy = (list: unknown[]) => {
+  return list.some(Boolean);
+};
+
+export type ElementOf<TList> = TList extends Array<infer Element>
+  ? Element
+  : never;
+
+export type ArgsOf<TFn> = TFn extends (...args: infer Args) => void
+  ? Args
+  : never;
+
+export type ResultOf<TFn> = TFn extends () => infer Result ? Result : never;

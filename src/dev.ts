@@ -1,7 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { z } from "zod";
-import "./getValue.ts";
 
 const createProxy = <TData extends NonNullable<unknown>>(
   data: TData,
@@ -100,4 +99,21 @@ const init = async () => {
   console.log(ref);
 };
 
-init();
+const cmd = () => {
+  outter: while (true) {
+    const heloo = prompt("say hello\n");
+    inner: switch (heloo) {
+      case "h":
+        console.log("help");
+        break inner;
+      case "a":
+        console.log("all");
+        break inner;
+      case "exit":
+        break outter;
+      default:
+        console.log(heloo);
+        break inner;
+    }
+  }
+};
