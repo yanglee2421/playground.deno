@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { z } from "zod";
+import "./ffi.ts";
 
 const createProxy = <TData extends NonNullable<unknown>>(
   data: TData,
@@ -87,7 +88,7 @@ const schema = z.object({
     }),
 });
 
-const init = async () => {
+export const init = async () => {
   const state = new Storage(schema.parse, "test.json");
   const ref = await state.ref();
 
@@ -99,7 +100,7 @@ const init = async () => {
   console.log(ref);
 };
 
-const cmd = () => {
+export const cmd = () => {
   outter: while (true) {
     const heloo = prompt("say hello\n");
     inner: switch (heloo) {

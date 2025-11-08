@@ -41,7 +41,7 @@ const createContent_Types = () => {
   return createXML(demoData);
 };
 
-const createRelsRels = () => {};
+export const createRelsRels = () => {};
 
 export const generateXLSX = async () => {
   const zip = new JSZip();
