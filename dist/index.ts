@@ -76,3 +76,22 @@ export const clamp = (num: number, min: number, max: number): number => {
 export const isClamped = (num: number, min: number, max: number): boolean => {
   return Object.is(num, clamp(num, min, max));
 };
+
+/**
+ * Returns the first element of an array or throws an error if the array is empty.
+ * @param param0 The array to get the first element from.
+ * @param createError A function that creates an error to be thrown if the array is empty.
+ * @returns The first element of the array.
+ */
+export const atFirstOrThrow = <TElement>(
+  [first]: TElement[],
+  createError?: () => Error,
+): TElement => {
+  if (first) return first;
+
+  if (typeof createError === "function") {
+    throw createError();
+  }
+
+  throw new Error("Not implemented");
+};
