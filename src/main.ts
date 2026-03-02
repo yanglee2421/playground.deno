@@ -1,56 +1,62 @@
-import JSZip from "jszip";
-import * as fs from "node:fs";
-import * as FXP from "fast-xml-parser";
+// #region Array
+export function chunk<TItem>(list: TItem[], size: number): Array<TItem[]> {
+  if (!list.length) {
+    return [];
+  }
 
-const createXML = (data: unknown) => {
-  const builder = new FXP.XMLBuilder({
-    ignoreAttributes: false,
-    format: true,
-  });
-  const output = builder.build(data);
-  return output;
-};
+  const result: Array<TItem[]> = [];
+  let firstIndexInNextLine = 0;
 
-const createContent_Types = () => {
-  const demoData = {
-    Types: {
-      "@_xmlns": "http://schemas.openxmlformats.org/package/2006/content-types",
-      Default: [
-        {
-          "@_Extension": "rels",
-          "@_ContentType":
-            "application/vnd.openxmlformats-package.relationships+xml",
-        },
-        { "@_Extension": "xml", "@_ContentType": "application/xml" },
-      ],
-      Override: [
-        {
-          "@_PartName": "/xl/workbook.xml",
-          "@_ContentType":
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
-        },
-        {
-          "@_PartName": "/xl/worksheets/sheet1.xml",
-          "@_ContentType":
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml",
-        },
-      ],
-    },
-  };
+  while (firstIndexInNextLine < list.length) {
+    result.push(list.slice(
+      firstIndexInNextLine,
+      firstIndexInNextLine += size,
+    ));
+  }
 
-  return createXML(demoData);
-};
+  return result;
+}
 
-export const createRelsRels = () => {};
+type Falsey = null | undefined | false | "" | 0 | 0n;
 
-export const generateXLSX = async () => {
-  const zip = new JSZip();
-  const content_Types = createContent_Types();
-  zip.file("[Content_Types].xml", content_Types);
-  zip.folder("_rels")?.file(".rels");
-  zip.folder("xl")?.file("workbook.xml");
-  zip.folder("xl")?.folder("_rels")?.file("workbook.xml.rels");
-  zip.folder("xl")?.folder("worksheets")?.file("sheet1.xml");
-  const buf = await zip.generateAsync({ type: "nodebuffer" });
-  await fs.promises.writeFile("./deno.xlsx", buf);
-};
+export function compact<TItem>(list: Array<TItem | Falsey>): TItem[] {
+  return list.filter(Boolean) as TItem[];
+}
+
+export function uniqBy<TItem>(
+  list: TItem[],
+  fn: keyof TItem | ((i: TItem) => unknown),
+): TItem[] {
+  return Array.from(
+    list.reduce((map, i) => {
+      const key = typeof fn === "function" ? fn(i) : Reflect.get(Object(i), fn);
+
+      map.has(key) ?? map.set(key, i);
+
+      return map;
+    }, new Map<unknown, TItem>()).values(),
+  );
+}
+
+// #endregion
+
+// #region Collection
+
+export function groupBy<TItem>(
+  collection: TItem[] | Record<string, TItem>,
+  fn: keyof TItem | ((i: TItem) => unknown),
+): Record<string, TItem[]> {
+  return Object.fromEntries(
+    Object.values(collection).reduce((map, i) => {
+      const key = typeof fn === "function" ? fn(i) : Reflect.get(Object(i), fn);
+      const vals = map.get(key) || [];
+
+      vals.push(i);
+      map.set(key, vals);
+
+      return map;
+    }, new Map<unknown, Array<TItem>>()).entries(),
+  ) as Record<string, TItem[]>;
+}
+
+// #endregion
