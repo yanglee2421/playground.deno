@@ -1,18 +1,5 @@
 type CallbackFn<TArgs extends unknown[], TReturn> = (...args: TArgs) => TReturn;
 
-export const chunk = <TElement>(
-  array: TElement[],
-  size: number,
-): TElement[][] => {
-  const result: TElement[][] = [];
-
-  for (let i = 0; i < array.length; i += size) {
-    result.push(array.slice(i, i + size));
-  }
-
-  return result;
-};
-
 export const debounce = <TArgs extends unknown[]>(
   fn: CallbackFn<TArgs, void>,
   delay = 0,

@@ -93,5 +93,50 @@ export const atFirstOrThrow = <TElement>(
     throw createError();
   }
 
-  throw new Error("Not implemented");
+  throw new Error("First element is not available.");
+};
+
+/**
+ * Checks if a value is an instance of `Error`.
+ * @param value The value to check.
+ * @returns `true` if the value is an `Error`, `false` otherwise.
+ */
+export const isError = (value: unknown): value is Error => {
+  return value instanceof Error;
+};
+
+/**
+ * Extracts the error message from an error object or returns a default message for unknown errors.
+ * @param error The error to extract the message from.
+ * @returns The error message.
+ */
+export const errorMessage = (error: unknown): string => {
+  if (isError(error)) {
+    return error.message;
+  }
+
+  if (typeof error === "string") {
+    return error;
+  }
+
+  return "An unknown error occurred.";
+};
+
+/**
+ * Splits an array into chunks of a specified size.
+ * @param array The array to split into chunks.
+ * @param size The size of each chunk.
+ * @returns An array of chunks.
+ */
+export const chunk = <TElement>(
+  array: TElement[],
+  size: number,
+): TElement[][] => {
+  const result: TElement[][] = [];
+
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+
+  return result;
 };

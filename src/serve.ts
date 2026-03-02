@@ -1,4 +1,5 @@
 import * as timers from "node:timers";
+import { errorMessage } from "#dist/index.ts";
 
 const websocketHandler = (request: Request) => {
   const { socket, response } = Deno.upgradeWebSocket(request);
@@ -19,14 +20,6 @@ const websocketHandler = (request: Request) => {
   });
 
   return response;
-};
-
-const errorToMessage = (error: unknown) => {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return String(error);
 };
 
 class Resource {
@@ -65,7 +58,7 @@ Deno.serve(
       console.log(netAddr.hostname, netAddr.port, netAddr.transport);
     },
     onError(error) {
-      const message = errorToMessage(error);
+      const message = errorMessage(error);
       const headers = new Headers();
 
       headers.set("Content-Type", "application/json;charset=utf-8");
@@ -110,5 +103,5 @@ Deno.serve(
     console.log(jwt, body);
 
     return new Response(readableStream, { headers });
-  }
+  },
 );

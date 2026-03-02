@@ -1,4 +1,4 @@
-import { isWithinRange } from "#dist/polyfill.ts";
+import { isClamped } from "#dist/index.ts";
 
 type CellValue = null | number;
 type CellValueTuple = [CellValue, CellValue, CellValue];
@@ -12,7 +12,7 @@ const getCellValue = (first: number, elements: number[]): CellValueTuple => {
 
   const second = params.find((i) => {
     const excepted = first + 10;
-    return isWithinRange(i, excepted - 3, excepted + 3);
+    return isClamped(i, excepted - 3, excepted + 3);
   });
 
   if (!second) {
@@ -21,7 +21,7 @@ const getCellValue = (first: number, elements: number[]): CellValueTuple => {
 
   const third = params.find((i) => {
     const excepted = second + 5;
-    return isWithinRange(i, excepted - 3, excepted + 3);
+    return isClamped(i, excepted - 3, excepted + 3);
   });
 
   if (!third) {
@@ -63,10 +63,10 @@ console.log(
   `Validation passed with cursors: ${JSON.stringify(
     Object.fromEntries(numberToCellValueMap.entries()),
     null,
-    2
-  )}`
+    2,
+  )}`,
 );
 
 console.log(
-  `Validation result: ${isOk ? "OK" : "FAIL"} for params: ${params.join(", ")}`
+  `Validation result: ${isOk ? "OK" : "FAIL"} for params: ${params.join(", ")}`,
 );

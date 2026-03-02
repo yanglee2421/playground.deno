@@ -4,7 +4,7 @@
     "serve": "deno run --watch -A src/serve.ts"
   },
   "name": "@yotulee/run",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "exports": "./dist/index.ts",
   "imports": {
     "@webview/webview": "jsr:@webview/webview@^0.9.0",
