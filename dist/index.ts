@@ -189,7 +189,7 @@ export class LocaleService {
    * @param fn The listener function.
    * @returns A function to unregister the listener.
    */
-  on(fn: () => void) {
+  on(fn: () => void): () => void {
     this.#listeners.add(fn);
     return () => {
       this.off(fn);
@@ -200,7 +200,7 @@ export class LocaleService {
    * Unregisters a listener function.
    * @param fn The listener function to unregister.
    */
-  off(fn: () => void) {
+  off(fn: () => void): void {
     this.#listeners.delete(fn);
   }
 
@@ -208,7 +208,7 @@ export class LocaleService {
    * Sets the current locale.
    * @param locale The locale to set.
    */
-  setLocale(locale: string) {
+  setLocale(locale: string): void {
     if (!this.locales.includes(locale)) {
       return;
     }
@@ -225,7 +225,7 @@ export class LocaleService {
    * Gets the current locale.
    * @returns The current locale.
    */
-  getLocale() {
+  getLocale(): string {
     if (!this.#locale) {
       const locale = atFirstOrThrow(this.locales);
       this.#locale = locale;
@@ -239,7 +239,7 @@ export class LocaleService {
    * @param convertLocale Whether to convert the locale in the pathname.
    * @returns The resolved pathname.
    */
-  resolvePathname(pathname: string, convertLocale = false) {
+  resolvePathname(pathname: string, convertLocale = false): string {
     const normalizedPathname = normalizePathname(pathname);
     const segments = normalizedPathname.split("/");
     const localeInPath = segments.at(1) || "";
