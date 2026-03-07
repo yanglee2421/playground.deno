@@ -1,0 +1,13 @@
+{
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "editor.fontSize": 20,
+  "editor.formatOnSave": true,
+  "editor.linkedEditing": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "workbench.iconTheme": "vscode-icons"
+}

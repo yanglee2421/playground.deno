@@ -177,11 +177,7 @@ export const calculateLocale = (locale: string, locales: string[]): string => {
     return locale;
   }
 
-  const firstLocale = locales.at(0);
-
-  if (typeof firstLocale === "undefined") {
-    throw new Error("No locales provided.");
-  }
+  const firstLocale = atFirstOrThrow(locales);
 
   return firstLocale;
 };
@@ -209,19 +205,19 @@ export const calculateLocalePathname = (
   const localeSegment = segments.at(1) || "";
 
   // DO NOT Need replace
-  if (localeSegment === locale) {
+  if (Object.is(localeSegment, locale)) {
     return normalizedPathname;
   }
 
-  // Need replace
-  const localeSegmentValid = locales.includes(localeSegment);
+  let resultSegments: string[];
 
-  if (localeSegmentValid) {
-    const resultSegments = arrayWith(segments, 1, locale);
-    return normalizePathname(resultSegments.join("/"));
+  if (locales.includes(localeSegment)) {
+    // Need replace
+    resultSegments = arrayWith(segments, 1, locale);
+  } else {
+    // No locale in path, need add
+    resultSegments = ["", ...arrayWith(segments, 0, locale)];
   }
 
-  // No locale in path, need add
-  const resultSegments = ["", ...arrayWith(segments, 0, locale)];
   return normalizePathname(resultSegments.join("/"));
 };
