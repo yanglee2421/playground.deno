@@ -172,7 +172,7 @@ export const normalizePathname = (pathname: string): string => {
  * @param locales The list of available locales (MUST NOT be empty).
  * @returns The calculated locale.
  */
-export const calculateLocale = (locale: string, locales: string[]) => {
+export const calculateLocale = (locale: string, locales: string[]): string => {
   if (locales.includes(locale)) {
     return locale;
   }
