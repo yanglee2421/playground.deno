@@ -140,3 +140,88 @@ export const chunk = <TElement>(
 
   return result;
 };
+
+/**
+ * Normalizes a path by ensuring it starts with a slash and does not end with a slash.
+ * @param path The path to normalize.
+ * @returns The normalized path.
+ */
+export const normalizePathname = (pathname: string): string => {
+  if (pathname === "/") {
+    return pathname;
+  }
+
+  const startWithSlash = pathname.startsWith("/");
+  const endWithSlash = pathname.endsWith("/");
+  let resultPath = pathname;
+
+  if (endWithSlash) {
+    resultPath = resultPath.replace(/\/+$/, "");
+  }
+
+  if (!startWithSlash) {
+    resultPath = `/${resultPath}`;
+  }
+
+  return resultPath;
+};
+
+/**
+ * Calculates the appropriate locale based on the provided locale and available locales.
+ * @param locale The desired locale.
+ * @param locales The list of available locales (MUST NOT be empty).
+ * @returns The calculated locale.
+ */
+export const calculateLocale = (locale: string, locales: string[]) => {
+  if (locales.includes(locale)) {
+    return locale;
+  }
+
+  const firstLocale = locales.at(0);
+
+  if (typeof firstLocale === "undefined") {
+    throw new Error("No locales provided.");
+  }
+
+  return firstLocale;
+};
+
+/**
+ * Calculates the appropriate pathname based on the provided pathname, locale, and available locales.
+ * @param pathname The original pathname.
+ * @param locale The desired locale.
+ * @param locales The list of available locales (MUST NOT be empty).
+ * @returns The calculated pathname.
+ */
+export const calculateLocalePathname = (
+  pathname: string,
+  locale: string,
+  locales: string[],
+): string => {
+  if (!locales.includes(locale)) {
+    throw new Error(
+      `Locale "${locale}" is not in the list of available locales.`,
+    );
+  }
+
+  const normalizedPathname = normalizePathname(pathname);
+  const segments = normalizedPathname.split("/");
+  const localeSegment = segments.at(1) || "";
+
+  // DO NOT Need replace
+  if (localeSegment === locale) {
+    return normalizedPathname;
+  }
+
+  // Need replace
+  const localeSegmentValid = locales.includes(localeSegment);
+
+  if (localeSegmentValid) {
+    const resultSegments = arrayWith(segments, 1, locale);
+    return normalizePathname(resultSegments.join("/"));
+  }
+
+  // No locale in path, need add
+  const resultSegments = ["", ...arrayWith(segments, 0, locale)];
+  return normalizePathname(resultSegments.join("/"));
+};
