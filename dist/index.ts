@@ -167,57 +167,95 @@ export const normalizePathname = (pathname: string): string => {
 };
 
 /**
- * Calculates the appropriate locale based on the provided locale and available locales.
- * @param locale The desired locale.
- * @param locales The list of available locales (MUST NOT be empty).
- * @returns The calculated locale.
+ * A service for managing locales in a web application.
+ * It allows you to set and get the current locale,
+ * listen for changes to the locale, and resolve pathnames based on the current locale.
  */
-export const calculateLocale = (locale: string, locales: string[]): string => {
-  if (locales.includes(locale)) {
-    return locale;
+export class LocaleService {
+  #listeners: Set<() => void> = new Set();
+  #locale: string = "";
+
+  /**
+   * The list of available locales.
+   */
+  locales: string[];
+
+  constructor(locales: string[]) {
+    this.locales = locales;
   }
 
-  const firstLocale = atFirstOrThrow(locales);
+  /**
+   * Registers a listener function to be called when the locale changes.
+   * @param fn The listener function.
+   * @returns A function to unregister the listener.
+   */
+  on(fn: () => void) {
+    this.#listeners.add(fn);
+    return () => {
+      this.off(fn);
+    };
+  }
 
-  return firstLocale;
-};
+  /**
+   * Unregisters a listener function.
+   * @param fn The listener function to unregister.
+   */
+  off(fn: () => void) {
+    this.#listeners.delete(fn);
+  }
 
-/**
- * Calculates the appropriate pathname based on the provided pathname, locale, and available locales.
- * @param pathname The original pathname.
- * @param locale The desired locale.
- * @param locales The list of available locales (MUST NOT be empty).
- * @returns The calculated pathname.
- */
-export const calculateLocalePathname = (
-  pathname: string,
-  locale: string,
-  locales: string[],
-): string => {
-  if (!locales.includes(locale)) {
-    throw new Error(
-      `Locale "${locale}" is not in the list of available locales.`,
+  /**
+   * Sets the current locale.
+   * @param locale The locale to set.
+   */
+  setLocale(locale: string) {
+    if (!this.locales.includes(locale)) {
+      return;
+    }
+
+    if (this.#locale === locale) {
+      return;
+    }
+
+    this.#locale = locale;
+    this.#listeners.forEach((listener) => listener());
+  }
+
+  /**
+   * Gets the current locale.
+   * @returns The current locale.
+   */
+  getLocale() {
+    if (!this.#locale) {
+      const locale = atFirstOrThrow(this.locales);
+      this.#locale = locale;
+    }
+
+    return this.#locale;
+  }
+  /**
+   * Resolves a pathname based on the current locale.
+   * @param pathname The pathname to resolve.
+   * @param convertLocale Whether to convert the locale in the pathname.
+   * @returns The resolved pathname.
+   */
+  resolvePathname(pathname: string, convertLocale = false) {
+    const normalizedPathname = normalizePathname(pathname);
+    const segments = normalizedPathname.split("/");
+    const localeInPath = segments.at(1) || "";
+
+    if (!this.locales.includes(localeInPath)) {
+      return normalizePathname(
+        arrayWith(segments, 0, this.getLocale()).join("/"),
+      );
+    }
+
+    if (!convertLocale) {
+      return normalizedPathname;
+    }
+
+    return normalizePathname(
+      arrayWith(segments, 1, this.getLocale()).join("/"),
     );
   }
-
-  const normalizedPathname = normalizePathname(pathname);
-  const segments = normalizedPathname.split("/");
-  const localeSegment = segments.at(1) || "";
-
-  // DO NOT Need replace
-  if (Object.is(localeSegment, locale)) {
-    return normalizedPathname;
-  }
-
-  let resultSegments: string[];
-
-  if (locales.includes(localeSegment)) {
-    // Need replace
-    resultSegments = arrayWith(segments, 1, locale);
-  } else {
-    // No locale in path, need add
-    resultSegments = ["", ...arrayWith(segments, 0, locale)];
-  }
-
-  return normalizePathname(resultSegments.join("/"));
-};
+}
