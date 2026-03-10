@@ -1,5 +1,6 @@
-import * as timers from "node:timers";
 import { errorMessage } from "#dist/index.ts";
+import { Hono } from "@hono/hono";
+import timers from "node:timers";
 
 const websocketHandler = (request: Request) => {
   const { socket, response } = Deno.upgradeWebSocket(request);
@@ -46,62 +47,84 @@ class Resource {
   }
 }
 
-const abortController = new AbortController();
+export const createNativeServer = () => {
+  const abortController = new AbortController();
 
-Deno.serve(
-  {
-    signal: abortController.signal,
-    hostname: "127.0.0.1",
-    port: 8080,
+  const server = Deno.serve(
+    {
+      signal: abortController.signal,
+      hostname: "127.0.0.1",
+      port: 8080,
 
-    onListen(netAddr) {
-      console.log(netAddr.hostname, netAddr.port, netAddr.transport);
+      onListen(netAddr) {
+        console.log(netAddr.hostname, netAddr.port, netAddr.transport);
+      },
+      onError(error) {
+        const message = errorMessage(error);
+        const headers = new Headers();
+
+        headers.set("Content-Type", "application/json;charset=utf-8");
+
+        return new Response(JSON.stringify({ message }), { headers });
+      },
     },
-    onError(error) {
-      const message = errorMessage(error);
+    async (request) => {
+      if (request.headers.get("upgrade") === "websocket") {
+        return websocketHandler(request);
+      }
+
+      const jwt = request.headers.get("Authorization");
+      const body = await request.json();
       const headers = new Headers();
+      const textEncoder = new TextEncoder();
+      const resource = new Resource();
+
+      const readableStream = new ReadableStream<Uint8Array>({
+        start() {
+          resource.load();
+        },
+        async pull(controller) {
+          await timers.promises.setTimeout(100);
+
+          const [done, value] = resource.read();
+
+          if (done) {
+            controller.close();
+            resource.clear();
+            return;
+          }
+
+          controller.enqueue(textEncoder.encode(String(value)));
+        },
+        cancel() {
+          resource.clear();
+        },
+      });
 
       headers.set("Content-Type", "application/json;charset=utf-8");
+      console.log(jwt, body);
 
-      return new Response(JSON.stringify({ message }), { headers });
+      return new Response(readableStream, { headers });
     },
-  },
-  async (request) => {
-    if (request.headers.get("upgrade") === "websocket") {
-      return websocketHandler(request);
-    }
+  );
 
-    const jwt = request.headers.get("Authorization");
-    const body = await request.json();
-    const headers = new Headers();
-    const textEncoder = new TextEncoder();
-    const resource = new Resource();
+  return {
+    server,
+    controller: abortController,
+  };
+};
 
-    const readableStream = new ReadableStream<Uint8Array>({
-      start() {
-        resource.load();
-      },
-      async pull(controller) {
-        await timers.promises.setTimeout(100);
+export const createHonoServer = () => {
+  const app = new Hono({});
 
-        const [done, value] = resource.read();
+  app.get("/", (c) => c.text("Hello Hono!"));
 
-        if (done) {
-          controller.close();
-          resource.clear();
-          return;
-        }
+  Deno.serve(
+    {
+      port: 8080,
+    },
+    app.fetch,
+  );
 
-        controller.enqueue(textEncoder.encode(String(value)));
-      },
-      cancel() {
-        resource.clear();
-      },
-    });
-
-    headers.set("Content-Type", "application/json;charset=utf-8");
-    console.log(jwt, body);
-
-    return new Response(readableStream, { headers });
-  },
-);
+  return app;
+};

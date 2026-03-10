@@ -2,6 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@denosaurs/plug@1": "1.1.0",
+    "jsr:@hono/hono@^4.12.7": "4.12.7",
     "jsr:@std/encoding@1": "1.0.10",
     "jsr:@std/fmt@1": "1.0.8",
     "jsr:@std/fs@1": "1.0.19",
@@ -9,6 +10,7 @@
     "jsr:@std/path@1": "1.1.1",
     "jsr:@std/path@^1.1.1": "1.1.1",
     "jsr:@webview/webview@0.9": "0.9.0",
+    "npm:create-hono@latest": "0.19.4",
     "npm:fast-xml-parser@^5.3.0": "5.3.0",
     "npm:jszip@^3.10.1": "3.10.1",
     "npm:zod@^4.1.12": "4.1.12"
@@ -22,6 +24,9 @@
         "jsr:@std/fs",
         "jsr:@std/path@1"
       ]
+    },
+    "@hono/hono@4.12.7": {
+      "integrity": "d418c260eda1b1ad48bc0193b29ed1804c4fbee27cc92954c415f58743fd65e9"
     },
     "@std/encoding@1.0.10": {
       "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
@@ -55,6 +60,10 @@
   "npm": {
     "core-util-is@1.0.3": {
       "integrity": "sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ=="
+    },
+    "create-hono@0.19.4": {
+      "integrity": "sha512-0Kes3aNRqez5hv8YOqL2GQS6qdlpe7f9JuxTdj4xU4FBCo7isqoQJBCgI6pzjatvlLZB0ftT61GzvSVZF2VIBg==",
+      "bin": true
     },
     "fast-xml-parser@5.3.0": {
       "integrity": "sha512-gkWGshjYcQCF+6qtlrqBqELqNqnt4CxruY6UVAWWnqb3DQ6qaNFEIKqzYep1XzHLM/QtrHVCxyPOtTk4LTQ7Aw==",
@@ -129,6 +138,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@hono/hono@^4.12.7",
       "jsr:@webview/webview@0.9",
       "npm:fast-xml-parser@^5.3.0",
       "npm:jszip@^3.10.1",

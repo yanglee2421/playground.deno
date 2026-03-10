@@ -115,6 +115,10 @@ export const errorMessage = (error: unknown): string => {
     return error.message;
   }
 
+  if (Object.hasOwn(Object(error), "message")) {
+    return String(Reflect.get(Object(error), "message"));
+  }
+
   if (typeof error === "string") {
     return error;
   }
