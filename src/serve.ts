@@ -1,130 +1,126 @@
-import { errorMessage } from "#dist/index.ts";
 import { Hono } from "@hono/hono";
-import timers from "node:timers";
 
-const websocketHandler = (request: Request) => {
-  const { socket, response } = Deno.upgradeWebSocket(request);
+const main = () => {
+  const app = new Hono();
 
-  socket.addEventListener("open", () => {
-    socket.send("opened");
-  });
-  socket.addEventListener("close", () => {
-    socket.send("close");
-  });
-  socket.addEventListener("message", (event) => {
-    console.log(event.data);
+  app.get("/api/getData", (ctx) => {
+    const url = new URL(ctx.req.url);
+    const barCode = url.searchParams.get("param") || "";
+    const type = url.searchParams.get("type") || "";
 
-    socket.send("message");
-  });
-  socket.addEventListener("error", () => {
-    socket.send("error");
-  });
-
-  return response;
-};
-
-class Resource {
-  list: number[];
-  index: number;
-  constructor() {
-    this.list = [];
-    this.index = 0;
-  }
-  load() {
-    this.list = Array.from({ length: 100 }, (...args) => args[1] + 1);
-    this.index = 0;
-  }
-  clear() {
-    this.list = [];
-    this.index = 0;
-  }
-  read() {
-    const value = this.list[this.index];
-    this.index++;
-
-    const done = this.index > this.list.length;
-    return [done, value] as const;
-  }
-}
-
-export const createNativeServer = () => {
-  const abortController = new AbortController();
-
-  const server = Deno.serve(
-    {
-      signal: abortController.signal,
-      hostname: "127.0.0.1",
-      port: 8080,
-
-      onListen(netAddr) {
-        console.log(netAddr.hostname, netAddr.port, netAddr.transport);
-      },
-      onError(error) {
-        const message = errorMessage(error);
-        const headers = new Headers();
-
-        headers.set("Content-Type", "application/json;charset=utf-8");
-
-        return new Response(JSON.stringify({ message }), { headers });
-      },
-    },
-    async (request) => {
-      if (request.headers.get("upgrade") === "websocket") {
-        return websocketHandler(request);
-      }
-
-      const jwt = request.headers.get("Authorization");
-      const body = await request.json();
-      const headers = new Headers();
-      const textEncoder = new TextEncoder();
-      const resource = new Resource();
-
-      const readableStream = new ReadableStream<Uint8Array>({
-        start() {
-          resource.load();
-        },
-        async pull(controller) {
-          await timers.promises.setTimeout(100);
-
-          const [done, value] = resource.read();
-
-          if (done) {
-            controller.close();
-            resource.clear();
-            return;
-          }
-
-          controller.enqueue(textEncoder.encode(String(value)));
-        },
-        cancel() {
-          resource.clear();
-        },
+    if (type === "csbtszh") {
+      return ctx.json({
+        code: "200",
+        msg: "读取成功，返回数据条数：2",
+        data: [
+          {
+            LBZGZPH: null,
+            CLLWKSRZ: 139.3,
+            DH: "6622508145029",
+            CZZZRQ: "2018-10-01 00:00:00",
+            CLLWKSRY: 139.3,
+            PJ_ID: "DX0066220250801632",
+            LBYGZPH: null,
+            LBYLH: "06659",
+            MCZZDW: "183",
+            SCZZDW: "183",
+            LBZCDH: "MG",
+            LBYLX: "9H",
+            CLLWHSRY: 44,
+            CLLWHSRZ: 44.8,
+            LBZSXH: "019",
+            CLZJSRY: 826.4,
+            MCZZRQ: "2019-01-07 00:00:00",
+            CLZJSRZ: 827.1,
+            LBYZZRQ: "2018-11-01 00:00:00",
+            ZH: "79199",
+            LBZLH: "06659",
+            SCZZRQ: "2019-01-07 00:00:00",
+            LBZZZRQ: "2018-11-01 00:00:00",
+            CZZZDW: "105",
+            LBYSXH: "107",
+            ZX: "RE2B",
+            LBZLX: "9H",
+            LBYCDH: "MG",
+          },
+          {
+            LBZGZPH: "Z",
+            CLLWKSRZ: 138.5,
+            DH: "6622511035037",
+            CZZZRQ: "2015-11-01 00:00:00",
+            CLLWKSRY: 139.2,
+            PJ_ID: "DX0066220251100037",
+            LBYGZPH: "Z",
+            LBYLH: null,
+            MCZZDW: "105",
+            SCZZDW: "105",
+            LBZCDH: "CO",
+            LBYLX: "9X",
+            CLLWHSRY: 32.4,
+            CLLWHSRZ: 33.6,
+            LBZSXH: "213206",
+            CLZJSRY: 805.3,
+            MCZZRQ: "2015-12-24 00:00:00",
+            CLZJSRZ: 805.2,
+            LBYZZRQ: "2015-01-01 00:00:00",
+            ZH: "79199",
+            LBZLH: null,
+            SCZZRQ: "2015-12-24 00:00:00",
+            LBZZZRQ: "2015-01-01 00:00:00",
+            CZZZDW: "114",
+            LBYSXH: "211298",
+            ZX: "RE2B",
+            LBZLX: "9X",
+            LBYCDH: "CO",
+          },
+        ],
       });
+    }
 
-      headers.set("Content-Type", "application/json;charset=utf-8");
-      console.log(jwt, body);
+    if (type === "csbts") {
+      return ctx.json({
+        code: "200",
+        msg: "数据读取成功",
+        data: [
+          {
+            CZZZDW: "114",
+            CZZZRQ: "2009-10",
+            MCZZDW: "131",
+            MCZZRQ: "2018-07-09 00:00:00",
+            SCZZDW: "131",
+            SCZZRQ: "2018-07-09 00:00:00",
 
-      return new Response(readableStream, { headers });
-    },
-  );
+            DH: barCode,
+            ZH: "73973",
+            ZX: "RE2B",
+            SRYY: "厂修",
+            SRDW: "588",
+          },
+        ],
+      });
+    }
 
-  return {
-    server,
-    controller: abortController,
-  };
-};
+    return ctx.json({ message: "no data" }, 500);
+  });
 
-export const createHonoServer = () => {
-  const app = new Hono({});
+  app.post("/api/saveData", (ctx) => {
+    const body = ctx.res.json();
 
-  app.get("/", (c) => c.text("Hello Hono!"));
+    console.log(`
+      URL: ${ctx.req.url}
+      Body: ${JSON.stringify(body)}
+      `);
+
+    return ctx.json({ code: "200", msg: "数据上传成功" });
+  });
 
   Deno.serve(
     {
+      hostname: "127.0.0.1",
       port: 8080,
     },
     app.fetch,
   );
-
-  return app;
 };
+
+main();
