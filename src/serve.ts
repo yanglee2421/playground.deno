@@ -103,8 +103,8 @@ const main = () => {
     return ctx.json({ message: "no data" }, 500);
   });
 
-  app.post("/api/saveData", (ctx) => {
-    const body = ctx.res.json();
+  app.post("/api/saveData", async (ctx) => {
+    const body = await ctx.req.json();
 
     console.log(`
       URL: ${ctx.req.url}
