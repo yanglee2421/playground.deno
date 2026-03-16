@@ -1,11 +1,26 @@
 import { Hono } from "@hono/hono";
+import { HTTPException } from "@hono/hono/http-exception";
 
 const main = () => {
   const app = new Hono();
 
+  app.onError((err, ctx) => {
+    console.error("Error occurred:", err);
+
+    if (err instanceof HTTPException) {
+      return ctx.json({ message: err.message }, err.status);
+    }
+
+    return ctx.json({ message: err.message || "Internal Server Error" }, 500);
+  });
+
+  app.notFound((ctx) => {
+    return ctx.json({ message: "Not Found" }, 404);
+  });
+
   app.get("/api/getData", (ctx) => {
     const url = new URL(ctx.req.url);
-    const barCode = url.searchParams.get("param") || "";
+    const param = url.searchParams.get("param") || "";
     const type = url.searchParams.get("type") || "";
 
     if (type === "csbtszh") {
@@ -33,7 +48,7 @@ const main = () => {
             MCZZRQ: "2019-01-07 00:00:00",
             CLZJSRZ: 827.1,
             LBYZZRQ: "2018-11-01 00:00:00",
-            ZH: "79199",
+            ZH: param,
             LBZLH: "06659",
             SCZZRQ: "2019-01-07 00:00:00",
             LBZZZRQ: "2018-11-01 00:00:00",
@@ -63,13 +78,13 @@ const main = () => {
             MCZZRQ: "2015-12-24 00:00:00",
             CLZJSRZ: 805.2,
             LBYZZRQ: "2015-01-01 00:00:00",
-            ZH: "79199",
+            ZH: param,
             LBZLH: null,
             SCZZRQ: "2015-12-24 00:00:00",
             LBZZZRQ: "2015-01-01 00:00:00",
             CZZZDW: "114",
             LBYSXH: "211298",
-            ZX: "RE2B",
+            ZX: "RD2",
             LBZLX: "9X",
             LBYCDH: "CO",
           },
@@ -90,8 +105,8 @@ const main = () => {
             SCZZDW: "131",
             SCZZRQ: "2018-07-09 00:00:00",
 
-            DH: barCode,
-            ZH: "73973",
+            DH: param + Date.now(),
+            ZH: param,
             ZX: "RE2B",
             SRYY: "厂修",
             SRDW: "588",
@@ -108,8 +123,7 @@ const main = () => {
 
     console.log(`
       URL: ${ctx.req.url}
-      Body: ${JSON.stringify(body)}
-      `);
+      Body: ${JSON.stringify(body)}`);
 
     return ctx.json({ code: "200", msg: "数据上传成功" });
   });
