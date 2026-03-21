@@ -7,6 +7,8 @@ export const createHmisRouter = () => {
 
   app.get("/api/getData", ...getData);
   app.post("/api/saveData", ...saveData);
+  app.get("/TrainEquipOverhaul/api/hmiseqapi.do", ...getData);
+  app.post("/TrainEquipOverhaul/api/hmiseqapi.do", ...saveData);
 
   return app;
 };
