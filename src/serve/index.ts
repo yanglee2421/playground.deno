@@ -1,14 +1,16 @@
 import { createRootApp } from "./app.ts";
 import { createDemoApp } from "./routes/demo.ts";
 import { createHmisRouter } from "./routes/hmis.ts";
+import { createKHApp } from "./routes/kh.ts";
 
 const main = () => {
-  const app = createRootApp();
   const hmisRouter = createHmisRouter();
   const demoRouter = createDemoApp();
-
-  app.route("/", hmisRouter);
-  app.route("/api", demoRouter);
+  const khApp = createKHApp();
+  const app = createRootApp()
+    .route("/", khApp)
+    .route("/", hmisRouter)
+    .route("/api", demoRouter);
 
   Deno.serve(
     {
