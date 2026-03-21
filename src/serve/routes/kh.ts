@@ -1,6 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { factory } from "../factory.ts";
+import { upload } from "../handles/kh/upload.ts";
 
 const schema = z.object({
   mesureId: z.string(),
@@ -13,11 +14,17 @@ export const createKHApp = () => {
     (c) => {
       const data = c.req.valid("json");
 
+      let zx = "RE2B";
+
+      if (data.mesureId.endsWith("1")) {
+        zx = "RD2";
+      }
+
       return c.json({
         data: {
           mesureId: "dh" + data.mesureId,
           zh: data.mesureId,
-          zx: "RE2B",
+          zx: zx,
           clbjLeft: "HEZD Ⅱ 18264",
           clbjRight: "HEZD Ⅱ 32744",
           czzzrq: "2003-01-16",
@@ -31,9 +38,7 @@ export const createKHApp = () => {
         msg: "success",
       });
     },
-  ).post("/api/lzdx_csbtsj_tsjg/save", (c) => {
-    return c.json({ code: 200, msg: "success" });
-  }).post("/api/lzdx_csbtsj_whzy_tsjgqx/save", (c) => {
-    return c.json({ code: 200, msg: "success" });
-  });
+  )
+    .post("/api/lzdx_csbtsj_tsjg/save", ...upload)
+    .post("/api/lzdx_csbtsj_whzy_tsjgqx/save", ...upload);
 };

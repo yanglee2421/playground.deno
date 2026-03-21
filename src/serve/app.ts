@@ -3,9 +3,7 @@ import { logger } from "@hono/hono/logger";
 import { factory } from "./factory.ts";
 
 export const createRootApp = () => {
-  const app = factory.createApp();
-
-  app.onError((err, ctx) => {
+  return factory.createApp().onError((err, ctx) => {
     console.error("Error occurred:", err);
 
     if (err instanceof HTTPException) {
@@ -13,13 +11,7 @@ export const createRootApp = () => {
     }
 
     return ctx.json({ message: err.message || "Internal Server Error" }, 500);
-  });
-
-  app.notFound((ctx) => {
+  }).notFound((ctx) => {
     return ctx.json({ message: "Not Found" }, 404);
-  });
-
-  app.use(logger());
-
-  return app;
+  }).use(logger());
 };
