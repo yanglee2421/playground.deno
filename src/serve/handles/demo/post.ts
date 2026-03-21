@@ -1,19 +1,11 @@
-import { zValidator } from "@hono/zod-validator";
-import z from "zod";
 import { factory } from "../../factory.ts";
 
-const bodySchema = z.object({
-  id: z.number(),
-});
-
 export const post = factory.createHandlers(
-  zValidator(
-    "json",
-    bodySchema,
-  ),
-  (c) => {
-    const data = c.req.valid("json");
+  async (c) => {
+    const data = await c.req.json();
 
-    return c.json({ message: "demo", data });
+    console.log(data);
+
+    return c.json({ msg: "demo", code: 200 });
   },
 );
