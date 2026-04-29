@@ -1,3 +1,4 @@
+import { jiangan } from "#src/serve/handles/kh/jiangan.ts";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { factory } from "../factory.ts";
@@ -8,10 +9,9 @@ const schema = z.object({
 });
 
 export const createKHApp = () => {
-  return factory.createApp().post(
-    "/api/lzdx_csbtsj_get/get",
-    zValidator("json", schema),
-    (c) => {
+  return factory
+    .createApp()
+    .post("/api/lzdx_csbtsj_get/get", zValidator("json", schema), (c) => {
       const data = c.req.valid("json");
 
       let zx = "RE2B";
@@ -37,8 +37,8 @@ export const createKHApp = () => {
         code: 200,
         msg: "success",
       });
-    },
-  )
+    })
     .post("/api/lzdx_csbtsj_tsjg/save", ...upload)
-    .post("/api/lzdx_csbtsj_whzy_tsjgqx/save", ...upload);
+    .post("/api/lzdx_csbtsj_whzy_tsjgqx/save", ...upload)
+    .post("/lzdxgwj/controller/api/ldcljjk/getData", ...jiangan);
 };

@@ -1,16 +1,16 @@
 {
-  "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
   "editor.fontSize": 20,
+  "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
   "editor.linkedEditing": true,
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
   "workbench.iconTheme": "vscode-icons",
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  }
+  "workbench.colorTheme": "Dark Modern",
+  "js/ts.experimental.useTsgo": false
 }
