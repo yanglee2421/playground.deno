@@ -1,3 +1,4 @@
+import { mock } from "#src/serve/routes/mock.ts";
 import { createRootApp } from "./app.ts";
 import { createDemoApp } from "./routes/demo.ts";
 import { createHmisRouter } from "./routes/hmis.ts";
@@ -10,15 +11,15 @@ const main = () => {
   const app = createRootApp()
     .route("/", khApp)
     .route("/", hmisRouter)
-    .route("/api", demoRouter);
+    .route("/api", demoRouter)
+    .route("/hmis", mock);
 
-  Deno.serve(
+  return Deno.serve(
     {
-      hostname: "127.0.0.1",
-      port: 8080,
+      port: 5003,
     },
     app.fetch,
   );
 };
 
-void main();
+main();

@@ -11,6 +11,7 @@
     "@hono/hono": "jsr:@hono/hono@^4.12.7",
     "@hono/zod-validator": "jsr:@hono/zod-validator@^0.7.6",
     "@webview/webview": "jsr:@webview/webview@^0.9.0",
+    "dayjs": "npm:dayjs@^1.11.20",
     "fast-xml-parser": "npm:fast-xml-parser@^5.3.0",
     "jszip": "npm:jszip@^3.10.1",
     "zod": "npm:zod@^4.1.12",
