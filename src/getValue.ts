@@ -1,4 +1,5 @@
 import { isClamped } from "#dist/index.ts";
+import { chunk } from "@yotulee/run";
 
 type CellValue = null | number;
 type CellValueTuple = [CellValue, CellValue, CellValue];
@@ -70,3 +71,72 @@ console.log(
 console.log(
   `Validation result: ${isOk ? "OK" : "FAIL"} for params: ${params.join(", ")}`,
 );
+
+const szMemo =
+  "0000000101000001030000010400000180000001810000018300000184000001";
+// "000000010100000102000001030000010400000105000001060000010700000108000001800000018100000182000001830000018400000185000001860000018700000188000001";
+
+const fn = (szMemo: string) => {
+  const list = szMemo.split("");
+  const channelInfoList = chunk(list, 8).map((item) => item.join(""));
+
+  const resolveDefectType = (value: string) => {
+    switch (value) {
+      case "1":
+        return "裂纹";
+      case "2":
+        return "透声不良";
+      case "4":
+        return "晶粗";
+      case "8":
+        return "压装不良";
+      default:
+        return "未知";
+    }
+  };
+
+  const resolveDirection = (value: string) => {
+    switch (value) {
+      case "0":
+        return "左";
+      case "8":
+        return "右";
+      default:
+        return "未知";
+    }
+  };
+
+  const resolvePlace = (value: string) => {
+    switch (value) {
+      case "0":
+        return "穿透";
+      case "1":
+        return "卸荷槽";
+      case "2":
+        return "轮座";
+      case "3":
+        return "外";
+      case "4":
+        return "内";
+      default:
+        return "未知";
+    }
+  };
+
+  const metaList = channelInfoList.map((item) => {
+    const direction = item.at(0) || "";
+    const place = item.at(1) || "";
+    const defectType = item.at(-1) || "";
+
+    return {
+      defectType: resolveDefectType(defectType),
+      direction: resolveDirection(direction),
+      place: resolvePlace(place),
+      original: item,
+    };
+  });
+
+  return metaList;
+};
+
+fn(szMemo);
