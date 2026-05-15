@@ -108,3 +108,7 @@ mock.post("/work", zValidator("json", schema), (c) => {
 
   throw new Error("dh或zh必须提供其中至少一个");
 });
+
+mock.post("/heartbeat", (c) => {
+  return c.json({ code: 200, message: "ok" });
+});
