@@ -1,34 +1,17 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@denosaurs/plug@1": "1.1.0",
     "jsr:@hono/hono@^4.12.7": "4.12.7",
     "jsr:@hono/hono@^4.8.3": "4.12.7",
     "jsr:@hono/zod-validator@~0.7.6": "0.7.6",
-    "jsr:@std/encoding@1": "1.0.10",
-    "jsr:@std/fmt@1": "1.0.8",
-    "jsr:@std/fs@1": "1.0.19",
-    "jsr:@std/internal@^1.0.9": "1.0.9",
-    "jsr:@std/path@1": "1.1.1",
-    "jsr:@std/path@^1.1.1": "1.1.1",
-    "jsr:@webview/webview@0.9": "0.9.0",
+    "npm:@vscode/sudo-prompt@^9.3.2": "9.3.2",
     "npm:create-hono@latest": "0.19.4",
     "npm:dayjs@^1.11.20": "1.11.20",
-    "npm:fast-xml-parser@^5.3.0": "5.3.0",
-    "npm:jszip@^3.10.1": "3.10.1",
+    "npm:node-fxplc@~0.1.6": "0.1.6",
     "npm:zod@^4.1.12": "4.3.6",
     "npm:zod@^4.1.13": "4.3.6"
   },
   "jsr": {
-    "@denosaurs/plug@1.1.0": {
-      "integrity": "eb2f0b7546c7bca2000d8b0282c54d50d91cf6d75cb26a80df25a6de8c4bc044",
-      "dependencies": [
-        "jsr:@std/encoding",
-        "jsr:@std/fmt",
-        "jsr:@std/fs",
-        "jsr:@std/path@1"
-      ]
-    },
     "@hono/hono@4.12.7": {
       "integrity": "d418c260eda1b1ad48bc0193b29ed1804c4fbee27cc92954c415f58743fd65e9"
     },
@@ -38,39 +21,81 @@
         "jsr:@hono/hono@^4.8.3",
         "npm:zod@^4.1.13"
       ]
-    },
-    "@std/encoding@1.0.10": {
-      "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
-    },
-    "@std/fmt@1.0.8": {
-      "integrity": "71e1fc498787e4434d213647a6e43e794af4fd393ef8f52062246e06f7e372b7"
-    },
-    "@std/fs@1.0.19": {
-      "integrity": "051968c2b1eae4d2ea9f79a08a3845740ef6af10356aff43d3e2ef11ed09fb06",
-      "dependencies": [
-        "jsr:@std/internal",
-        "jsr:@std/path@^1.1.1"
-      ]
-    },
-    "@std/internal@1.0.9": {
-      "integrity": "bdfb97f83e4db7a13e8faab26fb1958d1b80cc64366501af78a0aee151696eb8"
-    },
-    "@std/path@1.1.1": {
-      "integrity": "fe00026bd3a7e6a27f73709b83c607798be40e20c81dde655ce34052fd82ec76",
-      "dependencies": [
-        "jsr:@std/internal"
-      ]
-    },
-    "@webview/webview@0.9.0": {
-      "integrity": "a7c4d787aafa43258ff287f71a16679d5ca3d9b65e5d232c60c3985f9ab3e0ce",
-      "dependencies": [
-        "jsr:@denosaurs/plug"
-      ]
     }
   },
   "npm": {
-    "core-util-is@1.0.3": {
-      "integrity": "sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ=="
+    "@serialport/binding-mock@10.2.2": {
+      "integrity": "sha512-HAFzGhk9OuFMpuor7aT5G1ChPgn5qSsklTFOTUX72Rl6p0xwcSVsRtG/xaGp6bxpN7fI9D/S8THLBWbBgS6ldw==",
+      "dependencies": [
+        "@serialport/bindings-interface",
+        "debug"
+      ]
+    },
+    "@serialport/bindings-cpp@11.0.3": {
+      "integrity": "sha512-xgNDJ7pHHZCJMoDsEH+D8q5CV+V3RGN4/jLEG9SQ7q6kh+o03axV0l/upPHZ0HW4tTXpGgqPIGbXOTrD4RGQQA==",
+      "dependencies": [
+        "@serialport/bindings-interface",
+        "@serialport/parser-readline@11.0.0",
+        "debug",
+        "node-addon-api",
+        "node-gyp-build"
+      ],
+      "scripts": true
+    },
+    "@serialport/bindings-interface@1.2.2": {
+      "integrity": "sha512-CJaUd5bLvtM9c5dmO9rPBHPXTa9R2UwpkJ0wdh9JCYcbrPWsKz+ErvR0hBLeo7NPeiFdjFO4sonRljiw4d2XiA=="
+    },
+    "@serialport/parser-byte-length@11.0.1": {
+      "integrity": "sha512-UsffR5b3NHwhjJzsWv5fZMkoq3wGNyUcRTA9jlu02w+2kMlBRJPzlPVB5szVX0VWUEqkCg+3VaU2XWuYr+uAUA=="
+    },
+    "@serialport/parser-cctalk@11.0.1": {
+      "integrity": "sha512-klzVQfRcC1m0SVDV2Dy9hHfwweO2/mUMUyuXK04FRkKHy5/AdETmk9KTVVVVfpDCSysvHoyQPwiDFq8ddwX3cQ=="
+    },
+    "@serialport/parser-delimiter@11.0.0": {
+      "integrity": "sha512-aZLJhlRTjSmEwllLG7S4J8s8ctRAS0cbvCpO87smLvl3e4BgzbVgF6Z6zaJd3Aji2uSiYgfedCdNc4L6W+1E2g=="
+    },
+    "@serialport/parser-delimiter@11.0.1": {
+      "integrity": "sha512-NAsYa3OFt2xEnj/+0BRkQP2qkRNbXBPEq6uFJEdNdzcTSF+BTRXkoIRrWBq3N6koovPqW6lnbxc/iJYe5AX/2Q=="
+    },
+    "@serialport/parser-inter-byte-timeout@11.0.1": {
+      "integrity": "sha512-PEFV9dSpW+ptH1rLhdB9KgE+rbJ/FvQiZz0mx+4jkv/Po4g3PNsEEMXfMW0aQVSFVsmitvmE0jHlhGjLv8GQEg=="
+    },
+    "@serialport/parser-packet-length@11.0.1": {
+      "integrity": "sha512-KwPu8dsAI+eN4fnUS1vVmrOpUtBK4p9L9cHhwn5ZmfcvwvZMHp/J+IEu7xH0g5aM1/8QEoaql26BQP+sZ71NQQ=="
+    },
+    "@serialport/parser-readline@11.0.0": {
+      "integrity": "sha512-rRAivhRkT3YO28WjmmG4FQX6L+KMb5/ikhyylRfzWPw0nSXy97+u07peS9CbHqaNvJkMhH1locp2H36aGMOEIA==",
+      "dependencies": [
+        "@serialport/parser-delimiter@11.0.0"
+      ]
+    },
+    "@serialport/parser-readline@11.0.1": {
+      "integrity": "sha512-wkJ3EI733+yhbi7eBWzs/qn8+cfIBcYQjfrILPNqslAy6VlgdKw+pHoblDFmg78GN0TqGUDSWlTJ65oLEPVp5Q==",
+      "dependencies": [
+        "@serialport/parser-delimiter@11.0.1"
+      ]
+    },
+    "@serialport/parser-ready@11.0.1": {
+      "integrity": "sha512-v/bvlgKhrNt+SVLSqlfXCO1HEinfRRMGnzqbpdVCgu2SiWIEenCLjs51JisKVYQoQFcXdP/EHZnzm7NPXHDlAg=="
+    },
+    "@serialport/parser-regex@11.0.1": {
+      "integrity": "sha512-Lf3k7qibYqZ0+/wX3UA8fRng3WtQ+UyLpjQhG1COs6OBSq5/I5tYXczfhlrbA0gHo1qzgzr2V2t7m6FoBSc81Q=="
+    },
+    "@serialport/parser-slip-encoder@11.0.1": {
+      "integrity": "sha512-l4mXsAGzpmPO7+uqKJqtPDW643irfnGEWbiy34FoYvuOs8n0SmiMtgQZFAtvlTNQCRWE2tykF/WG6K/McJthDw=="
+    },
+    "@serialport/parser-spacepacket@11.0.1": {
+      "integrity": "sha512-Lq7fXoOsLOMo4XEt9HB31zV5LhrteXlsOy2o6r39TfRwU6x8Nou9jQMA9vW0a6yPra5zwsHIaNrA6tDOGj2Ozg=="
+    },
+    "@serialport/stream@11.0.1": {
+      "integrity": "sha512-6pjyKRg8MQuvhGfg36+PF7K5eGNQcEswCSiAg1UPilqqFS8X1QnaiSCn5UFp/hCN+pAtlFjkOi0ztvtmSI7n4g==",
+      "dependencies": [
+        "@serialport/bindings-interface",
+        "debug"
+      ]
+    },
+    "@vscode/sudo-prompt@9.3.2": {
+      "integrity": "sha512-gcXoCN00METUNFeQOFJ+C9xUI0DKB+0EGMVg7wbVYRHBw2Eq3fKisDZOkRdOz3kqXRKOENMfShPOmypw1/8nOw=="
     },
     "create-hono@0.19.4": {
       "integrity": "sha512-0Kes3aNRqez5hv8YOqL2GQS6qdlpe7f9JuxTdj4xU4FBCo7isqoQJBCgI6pzjatvlLZB0ftT61GzvSVZF2VIBg==",
@@ -79,72 +104,46 @@
     "dayjs@1.11.20": {
       "integrity": "sha512-YbwwqR/uYpeoP4pu043q+LTDLFBLApUP6VxRihdfNTqu4ubqMlGDLd6ErXhEgsyvY0K6nCs7nggYumAN+9uEuQ=="
     },
-    "fast-xml-parser@5.3.0": {
-      "integrity": "sha512-gkWGshjYcQCF+6qtlrqBqELqNqnt4CxruY6UVAWWnqb3DQ6qaNFEIKqzYep1XzHLM/QtrHVCxyPOtTk4LTQ7Aw==",
+    "debug@4.3.4": {
+      "integrity": "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==",
       "dependencies": [
-        "strnum"
-      ],
+        "ms"
+      ]
+    },
+    "ms@2.1.2": {
+      "integrity": "sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w=="
+    },
+    "node-addon-api@6.1.0": {
+      "integrity": "sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA=="
+    },
+    "node-fxplc@0.1.6": {
+      "integrity": "sha512-eHN56gMQON7+bQgAYLmxFTkeD8ExW1y5RS0Q+jwCbvm9RsNAogQfNuwaxmFENIqqaj4liC609vmf81M2nQdajw==",
+      "dependencies": [
+        "serialport"
+      ]
+    },
+    "node-gyp-build@4.6.0": {
+      "integrity": "sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==",
       "bin": true
     },
-    "immediate@3.0.6": {
-      "integrity": "sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ=="
-    },
-    "inherits@2.0.4": {
-      "integrity": "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ=="
-    },
-    "isarray@1.0.0": {
-      "integrity": "sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ=="
-    },
-    "jszip@3.10.1": {
-      "integrity": "sha512-xXDvecyTpGLrqFrvkrUSoxxfJI5AH7U8zxxtVclpsUtMCq4JQ290LY8AW5c7Ggnr/Y/oK+bQMbqK2qmtk3pN4g==",
+    "serialport@11.0.1": {
+      "integrity": "sha512-j/ntDuewAkqL6g5wKjwV2RTyLBL9cpob8aRd3yLAViYApTsJoYqRleyuzst0OboNTBjBsoxQ4YKYhuYHi1XViQ==",
       "dependencies": [
-        "lie",
-        "pako",
-        "readable-stream",
-        "setimmediate"
+        "@serialport/binding-mock",
+        "@serialport/bindings-cpp",
+        "@serialport/parser-byte-length",
+        "@serialport/parser-cctalk",
+        "@serialport/parser-delimiter@11.0.1",
+        "@serialport/parser-inter-byte-timeout",
+        "@serialport/parser-packet-length",
+        "@serialport/parser-readline@11.0.1",
+        "@serialport/parser-ready",
+        "@serialport/parser-regex",
+        "@serialport/parser-slip-encoder",
+        "@serialport/parser-spacepacket",
+        "@serialport/stream",
+        "debug"
       ]
-    },
-    "lie@3.3.0": {
-      "integrity": "sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==",
-      "dependencies": [
-        "immediate"
-      ]
-    },
-    "pako@1.0.11": {
-      "integrity": "sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw=="
-    },
-    "process-nextick-args@2.0.1": {
-      "integrity": "sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag=="
-    },
-    "readable-stream@2.3.8": {
-      "integrity": "sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==",
-      "dependencies": [
-        "core-util-is",
-        "inherits",
-        "isarray",
-        "process-nextick-args",
-        "safe-buffer",
-        "string_decoder",
-        "util-deprecate"
-      ]
-    },
-    "safe-buffer@5.1.2": {
-      "integrity": "sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g=="
-    },
-    "setimmediate@1.0.5": {
-      "integrity": "sha512-MATJdZp8sLqDl/68LfQmbP8zKPLQNV6BIZoIgrscFDQ+RsvK/BxeDQOgyxKKoh0y/8h3BqVFnCqQ/gd+reiIXA=="
-    },
-    "string_decoder@1.1.1": {
-      "integrity": "sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==",
-      "dependencies": [
-        "safe-buffer"
-      ]
-    },
-    "strnum@2.1.1": {
-      "integrity": "sha512-7ZvoFTiCnGxBtDqJ//Cu6fWtZtc7Y3x+QOirG15wztbdngGSkht27o2pyGWrVy0b4WAy3jbKmnoK6g5VlVNUUw=="
-    },
-    "util-deprecate@1.0.2": {
-      "integrity": "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="
     },
     "zod@4.3.6": {
       "integrity": "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="
@@ -154,10 +153,9 @@
     "dependencies": [
       "jsr:@hono/hono@^4.12.7",
       "jsr:@hono/zod-validator@~0.7.6",
-      "jsr:@webview/webview@0.9",
+      "npm:@vscode/sudo-prompt@^9.3.2",
       "npm:dayjs@^1.11.20",
-      "npm:fast-xml-parser@^5.3.0",
-      "npm:jszip@^3.10.1",
+      "npm:node-fxplc@~0.1.6",
       "npm:zod@^4.1.12"
     ]
   }

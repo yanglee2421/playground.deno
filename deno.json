@@ -6,23 +6,20 @@
   },
   "name": "@yotulee/run",
   "version": "0.0.15",
-  "exports": "./dist/index.ts",
+  "exports": "./src/index.ts",
   "imports": {
     "@hono/hono": "jsr:@hono/hono@^4.12.7",
     "@hono/zod-validator": "jsr:@hono/zod-validator@^0.7.6",
-    "@webview/webview": "jsr:@webview/webview@^0.9.0",
+    "@vscode/sudo-prompt": "npm:@vscode/sudo-prompt@^9.3.2",
     "dayjs": "npm:dayjs@^1.11.20",
-    "fast-xml-parser": "npm:fast-xml-parser@^5.3.0",
-    "jszip": "npm:jszip@^3.10.1",
+    "node-fxplc": "npm:node-fxplc@^0.1.6",
     "zod": "npm:zod@^4.1.12",
     "#src/": "./src/",
     "#dist/": "./dist/"
   },
   "publish": {
-    "include": [
-      "dist/",
-      "README.md",
-      "LICENSE"
-    ]
-  }
+    "include": ["dist/", "README.md", "LICENSE"]
+  },
+  "nodeModulesDir": "auto",
+  "allowScripts": ["npm:@serialport/bindings-cpp@11.0.3"]
 }

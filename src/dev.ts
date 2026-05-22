@@ -1,35 +1,42 @@
-import "./serve/index.ts";
+import { exec } from "@vscode/sudo-prompt";
+import path from "node:path";
+import process from "node:process";
+import url from "node:url";
 
-// const BASE_URL = "127.0.0.1";
-const BASE_URL = "47.103.157.15";
+const main = () => {
+  const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+  const serveExe = path.resolve(__dirname, "../serve.exe");
 
-export const dev = async () => {
-  const url = new URL("/hmis/work", `http://${BASE_URL}:5003`);
+  exec(
+    serveExe,
+    {
+      name: "Electron",
+    },
+    (error, result) => {
+      if (error) {
+        console.error("error", error);
 
-  const headers = new Headers();
-  headers.set("Content-Type", "application/json;charset=utf-8");
+        return;
+      }
 
-  const res = await fetch(url, {
-    method: "POST",
-    body: JSON.stringify({
-      dh: "",
-      zh: "12312312",
-    }),
-    headers,
-  });
+      console.log("result", result);
+    },
+  );
+};
+
+main();
+
+process.on("SIGINT", async () => {
+  const res = await fetch("http://localhost:5003/exit");
   const data = await res.json();
 
   console.log(data);
-};
-
-export const heartbeat = async () => {
-  const url = new URL("/hmis/heartbeat", `http://${BASE_URL}:5003`);
-
-  const res = await fetch(url, {
-    method: "POST",
-  });
-
+  process.exit(0);
+});
+process.on("SIGTERM", async () => {
+  const res = await fetch("http://localhost:5003/exit");
   const data = await res.json();
 
   console.log(data);
-};
+  process.exit(0);
+});
