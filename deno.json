@@ -2,12 +2,14 @@
   "tasks": {
     "dev": "deno run --watch -A src/dev.ts",
     "serve": "deno run --watch -A src/serve/index.ts",
+    "ftp": "deno run --watch -A src/ftp.ts",
     "build": "deno compile -A src/serve/index.ts"
   },
   "name": "@yotulee/run",
   "version": "0.0.15",
   "exports": "./src/index.ts",
   "imports": {
+    "@electerm/ftp-srv": "npm:@electerm/ftp-srv@^1.0.5",
     "@hono/hono": "jsr:@hono/hono@^4.12.7",
     "@hono/zod-validator": "jsr:@hono/zod-validator@^0.7.6",
     "@vscode/sudo-prompt": "npm:@vscode/sudo-prompt@^9.3.2",
