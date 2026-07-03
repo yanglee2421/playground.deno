@@ -7,6 +7,7 @@ export const createDemoApp = () => {
   app.post("/csbts_501/save", ...upload);
   app.post("/csbts_502/save", ...upload);
   app.post("/csbts_503/save", ...upload);
+  app.post("/ct52a1_3/save", ...upload);
 
   return app;
 };

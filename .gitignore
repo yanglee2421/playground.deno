@@ -2,3 +2,4 @@
 *.exe
 .local
 node_modules
+dist/
