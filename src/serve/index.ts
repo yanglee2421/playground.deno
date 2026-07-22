@@ -1,3 +1,4 @@
+import { hxzyRouter } from "#src/serve/routes/hxzy.ts";
 import { mock } from "#src/serve/routes/mock.ts";
 import { createRootApp } from "./app.ts";
 import { createDemoApp } from "./routes/demo.ts";
@@ -9,6 +10,7 @@ const main = () => {
   const demoRouter = createDemoApp();
   const khApp = createKHApp();
   const app = createRootApp()
+    .route("/", hxzyRouter)
     .route("/", khApp)
     .route("/", hmisRouter)
     .route("/api", demoRouter)
