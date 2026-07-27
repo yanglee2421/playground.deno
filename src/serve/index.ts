@@ -1,4 +1,5 @@
 import { hxzyRouter } from "#src/serve/routes/hxzy.ts";
+import { jtvRouter } from "#src/serve/routes/jtv.ts";
 import { mock } from "#src/serve/routes/mock.ts";
 import { createRootApp } from "./app.ts";
 import { createDemoApp } from "./routes/demo.ts";
@@ -13,6 +14,7 @@ const main = () => {
     .route("/", hxzyRouter)
     .route("/", khApp)
     .route("/", hmisRouter)
+    .route("/", jtvRouter)
     .route("/api", demoRouter)
     .route("/hmis", mock);
 
